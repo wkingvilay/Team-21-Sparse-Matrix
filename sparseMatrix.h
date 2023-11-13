@@ -20,6 +20,7 @@ class Node {
         // Constructors
         Node(int row, int col, int value);
         ~Node();
+    friend class SparseMatrix;
 };
 
 class SparseMatrix {
@@ -29,14 +30,17 @@ class SparseMatrix {
         int cols = 0; // Amount of cols
         std::vector<Node*> topOfRow; // Pointers to the first node in row
         std::vector<Node*> topOfCol; // Pointers to the first node in col
+        // Helpers
+        Node* findBeforeRow(int row, int col); // Find the last item before (row, col) in row
+        Node* findBeforeCol(int row, int col); // Find the last item before (row, col) in col
     public:
         // Constructors
         SparseMatrix();
         SparseMatrix(int defaultValue);
         ~SparseMatrix();
         // Basic operations
-        Node* getNode(int row, int col); // Return node is present at (row, col). If not present, return nullptr
-        int getValue(int row, int col); // Get value of node at (row, col)
+        Node* getNode(int row, int col); // Return node present at (row, col). If not present, return nullptr
+        int getValue(int row, int col); // Get value of matrix at (row, col), regardless if node exists
         void setNode(int row, int col, int value); // Set node with value at (row, col)
         void removeNode(int row, int col); // Remove node at (row, col)
         std::string showMatrix(); // Return a string that can be printed
