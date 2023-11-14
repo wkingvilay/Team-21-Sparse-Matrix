@@ -136,7 +136,29 @@ void SparseMatrix::removeNode(int row, int col) {
 
 // Return a string that can be printed
 std::string SparseMatrix::showMatrix() {
-
+    //Variable to store string
+    std::string matrixString = "";
+    // Traverse through rows
+    for (int row = 0; row < rows; ++row) {
+        //Start at first node
+        Node* current = topOfRow[row];
+        // Traverse through columns
+        for (int col = 0; col < cols; ++col) {
+            if (current != nullptr && current->col == col) {
+                // If node exists at (row, col), append its value
+                std::string currentVal = std::to_string(current->value); //Turn the value into a string
+                matrixString += (currentVal + " ");
+                current = current->nextInRow; //Move to the next row
+            } else {
+                // If node doesn't exist, append the default value
+                std::string defaultVal = std::to_string(defaultValue); //Turn the value into a string
+                matrixString += (defaultVal + " ");
+            }
+        }
+        // Move to the next line
+        matrixString += "\n";
+    }
+    return matrixString;
 }
 
 /*
