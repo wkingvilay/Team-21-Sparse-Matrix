@@ -190,5 +190,23 @@ void SparseMatrix::sumMatrix(SparseMatrix* operand) {
 
 // Multiplies this matrix by operand matrix
 void SparseMatrix::multiplyMatrix(SparseMatrix* operand) {
+        //Return if out of range or nullptr
+    if (operand == nullptr || operand->rows != this->rows || operand->cols != this->cols) {
+        return;
+    }
 
+    //Traverse through matrix
+    for (int row = 0; row < this->rows; ++row) {
+        for (int col = 0; col < this->cols; ++col) {
+            // Get values from both matrices
+            int val1 = this->getValue(row, col);
+            int val2 = operand->getValue(row, col);
+
+            // Calculate the product of both values
+            int prod = val1 * val2;
+
+            // Set the result in the current matrix
+            this->setNode(row, col, prod);
+        }
+    }
 }
