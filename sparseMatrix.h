@@ -26,8 +26,6 @@ class Node {
 class SparseMatrix {
     private:
         int defaultValue = 0; // The default value. Nodes with values = default are omitted.
-        int rows = 0; // Amount of rows
-        int cols = 0; // Amount of cols
         std::vector<Node*> topOfRow; // Pointers to the first node in row
         std::vector<Node*> topOfCol; // Pointers to the first node in col
         // Helpers
