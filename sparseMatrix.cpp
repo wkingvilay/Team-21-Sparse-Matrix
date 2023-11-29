@@ -5,6 +5,7 @@ Group Members: C. Horton, P. Meralta, W. Kingvilay, A. Frias
 */
 
 #include "sparseMatrix.h"
+#include <iostream>
 
 /*
 Node Class Constructors
@@ -31,6 +32,7 @@ Node* SparseMatrix::findBeforeRow(int row, int col) {
         if (beforeRow->nextInRow->col >= col) return beforeRow;
         beforeRow = beforeRow->nextInRow;
     }
+    return nullptr;
 }
 
 Node* SparseMatrix::findBeforeCol(int row, int col) {
@@ -40,6 +42,7 @@ Node* SparseMatrix::findBeforeCol(int row, int col) {
         if (beforeCol->nextInCol->row >= row) return beforeCol;
         beforeCol = beforeCol->nextInCol;
     }
+    return nullptr;
 }
 
 /*
@@ -65,12 +68,11 @@ Matrix Class Basic Operations
 // Return node present at (row, col). If not present, return nullptr
 Node* SparseMatrix::getNode(int row, int col) { 
     // Check bounds
-    if (row < 0 || row >= rows || col < 0 || col >= cols) return nullptr;
+    if (row < 0 || row >= topOfRow.size() || col < 0 || col >= topOfCol.size()) return nullptr;
     // Iterate through rows
     Node* i = this->topOfRow[row];
-    while (i != nullptr) {
+    while (i != nullptr && i->col <= col) {
         if (i->col == col) return i;
-        if (i->col > col) return nullptr;
         i = i->nextInRow;
     }
     return nullptr;
@@ -87,13 +89,11 @@ int SparseMatrix::getValue(int row, int col) {
 void SparseMatrix::setNode(int row, int col, int value) {
     // Check bounds and extend lists if too small
     if (row < 0 || col < 0) return;
-    while (row >= rows) {
+    while (row >= topOfRow.size()) {
         topOfRow.push_back(nullptr);
-        rows += 1;
     }
-    while (col >= cols) {
+    while (col >= topOfCol.size()) {
         topOfCol.push_back(nullptr);
-        cols += 1;
     }
 
     // Check if node already exists
@@ -113,10 +113,14 @@ void SparseMatrix::setNode(int row, int col, int value) {
     if (beforeRow != nullptr) {
         insert->nextInRow = beforeRow->nextInRow;
         beforeRow->nextInRow = insert;
+    } else {
+        this->topOfRow[row] = insert;
     }
     if (beforeCol != nullptr) {
         insert->nextInCol = beforeCol->nextInCol;
         beforeCol->nextInCol = insert;
+    } else {
+        this->topOfCol[col] = insert;
     }
 }
 
@@ -139,11 +143,11 @@ std::string SparseMatrix::showMatrix() {
     //Variable to store string
     std::string matrixString = "";
     // Traverse through rows
-    for (int row = 0; row < rows; ++row) {
+    for (int row = 0; row < topOfRow.size(); ++row) {
         //Start at first node
         Node* current = topOfRow[row];
         // Traverse through columns
-        for (int col = 0; col < cols; ++col) {
+        for (int col = 0; col < topOfCol.size(); ++col) {
             if (current != nullptr && current->col == col) {
                 // If node exists at (row, col), append its value
                 std::string currentVal = std::to_string(current->value); //Turn the value into a string
@@ -168,22 +172,22 @@ Matrix Class Matrix Operations
 // Adds operand matrix to this matrix
 void SparseMatrix::sumMatrix(SparseMatrix* operand) {
     //Return if out of range or nullptr
-    if (operand == nullptr || operand->rows != this->rows || operand->cols != this->cols) {
+    if (operand == nullptr || operand->topOfRow.size() != this->topOfRow.size() || operand->topOfCol.size() != this->topOfCol.size()) {
         return;
     }
 
     //Traverse through matrix
-    for (int row = 0; row < this->rows; ++row) {
-        for (int col = 0; col < this->cols; ++col) {
+    for (int row = 0; row < this->topOfRow.size(); row++) {
+        for (int col = 0; col < this->topOfCol.size(); col++) {
             // Get values from both matrices
             int val1 = this->getValue(row, col);
             int val2 = operand->getValue(row, col);
-
             // Calculate sum
             int sum = val1 + val2;
-
             // Set the result in the current matrix
+            std::cout << "try to set " << std::to_string(row) << std::to_string(col) << " to " << std::to_string(sum);
             this->setNode(row, col, sum);
+            std::cout << "successfully set " << std::to_string(row) << std::to_string(col) << " to " << std::to_string(sum);
         }
     }
 }
