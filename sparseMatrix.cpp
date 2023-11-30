@@ -193,6 +193,36 @@ void SparseMatrix::sumMatrix(SparseMatrix* operand) {
 }
 
 // Multiplies this matrix by operand matrix
+// As I write this, I figure we may need to add two more parameters of some sort
+// So right now, Psuedocode will have to do until we figure something out of some sort. 
+// Still trying to figure a work around on how should I account for matrices when rows != cols so that
+// A matrix multiplication is possible
 void SparseMatrix::multiplyMatrix(SparseMatrix* operand) {
 
+    for (int row = 0; row < this->rows; ++row) {
+        for (int col = 0; col < this->cols; ++col) {
+            int sum = 0;
+            
+            // Dot Product
+            for(int k = 0; k < this->rows; k++){
+                int val1 = this->getValue(row, col);
+                int val2 = operand->getValue(row, col);
+                sum += val1 * val2;
+            
+
+                // Add result to the matrix
+                if(sum != 0){
+                    this->setNode(row, col, sum);
+                }
+
+            }
+        }
+    }
 }
+
+// 
+// std::vector<std::vector<int>> SparseMatrix::Transpose(){
+//     
+//
+//     return matrix;
+// }
