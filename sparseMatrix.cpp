@@ -16,9 +16,7 @@ Node::Node(int row, int col, int val) {
     this->value = val;
 }
 
-Node::~Node() {
-    
-}
+Node::~Node() = default;
 
 /*
 Matrix Class Helpers
@@ -50,17 +48,13 @@ Node* SparseMatrix::findBeforeCol(int row, int col) {
 Matrix Class Constructors
 */
 
-SparseMatrix::SparseMatrix() {
-
-}
+SparseMatrix::SparseMatrix() = default;
 
 SparseMatrix::SparseMatrix(int defaultValue) {
     this->defaultValue = defaultValue;
 }
 
-SparseMatrix::~SparseMatrix() {
-
-}
+SparseMatrix::~SparseMatrix() = default;
 
 /*
 Matrix Class Basic Operations
