@@ -25,7 +25,7 @@ int main(int argc, char*argv[]) {
     printMatrix(matrix2);
 
     // Sum the two matrices
-    matrix.sumMatrix(&matrix2);
+    matrix = matrix.sumMatrix(&matrix2);
     printMatrix(matrix);
 
     // Test deletion in the middle of a matrix
@@ -38,6 +38,24 @@ int main(int argc, char*argv[]) {
     printMatrix(matrix3);
     matrix3.removeNode(1, 1);
     printMatrix(matrix3);
+
+    // Test matrix multiplication
+    SparseMatrix matrix4 = SparseMatrix(1);
+    matrix4.setNode(0, 1, 2);
+    matrix4.setNode(0, 2, 3);
+    matrix4.setNode(1, 0, 4);
+    matrix4.setNode(1, 1, 5);
+    matrix4.setNode(1, 2, 6);
+    printMatrix(matrix4);
+    SparseMatrix matrix5 = SparseMatrix(7);
+    matrix5.setNode(0, 1, 8);
+    matrix5.setNode(1, 0, 9);
+    matrix5.setNode(1, 1, 10);
+    matrix5.setNode(2, 0, 11);
+    matrix5.setNode(2, 1, 12);
+    printMatrix(matrix5);
+    matrix4 = matrix4.multiplyMatrix(&matrix5); // matrix4 x matrix5
+    printMatrix(matrix4);
 }
 
 void printMatrix(SparseMatrix matrix) {
