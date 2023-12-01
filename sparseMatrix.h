@@ -43,6 +43,6 @@ class SparseMatrix {
         void removeNode(int row, int col); // Remove node at (row, col)
         std::string showMatrix(); // Return a string that can be printed
         // Matrix operations
-        void sumMatrix(SparseMatrix* operand); // Adds operand matrix to this matrix
-        void multiplyMatrix(SparseMatrix* operand); // Multiplies this matrix by operand matrix
+        SparseMatrix sumMatrix(SparseMatrix* operand); // Adds operand matrix to this matrix
+        SparseMatrix multiplyMatrix(SparseMatrix* operand); // Multiplies this matrix by operand matrix
 };
