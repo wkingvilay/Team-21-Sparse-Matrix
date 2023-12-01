@@ -202,25 +202,36 @@ void SparseMatrix::sumMatrix(SparseMatrix* operand) {
 // A matrix multiplication is possible
 void SparseMatrix::multiplyMatrix(SparseMatrix* operand) {
 
+    if(this->topOfCol.size() != operand->topOfRow.size()){
+        return;
+    }
+
+    SparseMatrix product = SparseMatrix(this->defaultValue);
+
+
     for (int row = 0; row < this->topOfRow.size(); ++row) {
-        for (int col = 0; col < this->topOfCol.size(); ++col) {
+        for (int col = 0; col < this->topOfRow.size(); ++col) {
             int sum = 0;
             
             // Dot Product
-            for(int k = 0; k < this->topOfCol.size(); k++){
-                int val1 = this->getValue(row, col);
-                int val2 = operand->getValue(row, col);
+            for(int k = 0; k < this->topOfRow.size(); k++){
+                int val1 = this->getValue(row, k);
+                int val2 = operand->getValue(k, col);
                 sum += val1 * val2;
             
 
                 // Add result to the matrix
-                if(sum != 0){
-                    this->setNode(row, col, sum);
-                }
-
+                //if(sum != 0){
+                product->setNode(row, col, sum);
+                //}
             }
         }
     }
+
+    this->topOfRow = product->topOfRow;
+    this->topOfCol = product->topOfCol;
+
+    delete product;
 }
 
 // 
