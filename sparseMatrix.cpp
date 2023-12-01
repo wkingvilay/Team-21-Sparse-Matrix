@@ -61,7 +61,7 @@ Matrix Class Basic Operations
 */
 
 // Return node present at (row, col). If not present, return nullptr
-Node* SparseMatrix::getNode(int row, int col) { 
+Node* SparseMatrix::getNode(int row, int col) {
     // Check bounds
     if (row < 0 || row >= topOfRow.size() || col < 0 || col >= topOfCol.size()) return nullptr;
     // Iterate through rows
@@ -175,11 +175,13 @@ Matrix Class Matrix Operations
 */
 
 // Adds operand matrix to this matrix
-void SparseMatrix::sumMatrix(SparseMatrix* operand) {
+SparseMatrix SparseMatrix::sumMatrix(SparseMatrix* operand) {
     //Return if nullptr, or matrices not of equal size
     if (operand == nullptr || operand->topOfRow.size() != this->topOfRow.size() || operand->topOfCol.size() != this->topOfCol.size()) {
-        return;
+        return *this;
     }
+
+    SparseMatrix output = SparseMatrix(this->defaultValue);
 
     //Traverse through matrix
     for (int row = 0; row < this->topOfRow.size(); row++) {
@@ -190,53 +192,34 @@ void SparseMatrix::sumMatrix(SparseMatrix* operand) {
             // Calculate sum
             int sum = val1 + val2;
             // Set the result in the current matrix
-            setNode(row, col, sum);
+            output.setNode(row, col, sum);
         }
     }
+    return output;
 }
 
 // Multiplies this matrix by operand matrix
-// As I write this, I figure we may need to add two more parameters of some sort
-// So right now, Psuedocode will have to do until we figure something out of some sort. 
-// Still trying to figure a work around on how should I account for matrices when rows != cols so that
-// A matrix multiplication is possible
-void SparseMatrix::multiplyMatrix(SparseMatrix* operand) {
-
+SparseMatrix SparseMatrix::multiplyMatrix(SparseMatrix* operand) {
     if(this->topOfCol.size() != operand->topOfRow.size()){
-        return;
+        return *this;
     }
 
     SparseMatrix product = SparseMatrix(this->defaultValue);
 
-
     for (int row = 0; row < this->topOfRow.size(); ++row) {
         for (int col = 0; col < this->topOfRow.size(); ++col) {
             int sum = 0;
-            
+
             // Dot Product
-            for(int k = 0; k < this->topOfRow.size(); k++){
+            for(int k = 0; k < this->topOfCol.size(); k++){
                 int val1 = this->getValue(row, k);
                 int val2 = operand->getValue(k, col);
                 sum += val1 * val2;
-            
 
                 // Add result to the matrix
-                //if(sum != 0){
-                product->setNode(row, col, sum);
-                //}
+                product.setNode(row, col, sum);
             }
         }
     }
-
-    this->topOfRow = product->topOfRow;
-    this->topOfCol = product->topOfCol;
-
-    delete product;
+    return product;
 }
-
-// 
-// std::vector<std::vector<int>> SparseMatrix::Transpose(){
-//     
-//
-//     return matrix;
-// }
