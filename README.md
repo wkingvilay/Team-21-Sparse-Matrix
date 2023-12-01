@@ -13,9 +13,11 @@ todo
 todo
 
 ### Work Split
-| Team Member | Work Done |
+All team members will make at least contributions to the code. However, each team member has an additional speciality:
+| Team Member | Speciality |
 |--|--|
-| C. Horton | Project manager, GitHub readme |
-| P. Meralta |  |
-| W. Kingvilay |  |
-| A. Frias |  |
+| C. Horton | GitHub management |
+| P. Meralta | Presentation |
+| W. Kingvilay | Report |
+| A. Frias | Presentation |
+It is up to each team member to cover the area designated by their speciality, and to assist one another as requested.
