@@ -5,7 +5,6 @@ Group Members: C. Horton, P. Meralta, W. Kingvilay, A. Frias
 */
 
 #include "sparseMatrix.h"
-#include <iostream>
 
 /*
 Node Class Constructors
@@ -28,7 +27,8 @@ Matrix Class Helpers
 Node* SparseMatrix::findBeforeRow(int row, int col) {
     Node* beforeRow = this->topOfRow[row];
     while (beforeRow != nullptr) {
-        if (beforeRow->nextInRow == nullptr) return nullptr;
+        if (beforeRow->col < col && beforeRow->nextInRow == nullptr) return beforeRow;
+        if (beforeRow->nextInRow == nullptr || beforeRow->col == col) return nullptr;
         if (beforeRow->nextInRow->col >= col) return beforeRow;
         beforeRow = beforeRow->nextInRow;
     }
@@ -38,7 +38,8 @@ Node* SparseMatrix::findBeforeRow(int row, int col) {
 Node* SparseMatrix::findBeforeCol(int row, int col) {
     Node* beforeCol = this->topOfCol[col];
     while (beforeCol != nullptr) {
-        if (beforeCol->nextInCol == nullptr) return nullptr;
+        if (beforeCol->row < row && beforeCol->nextInCol == nullptr) return beforeCol;
+        if (beforeCol->nextInCol == nullptr || beforeCol->row == row) return nullptr;
         if (beforeCol->nextInCol->row >= row) return beforeCol;
         beforeCol = beforeCol->nextInCol;
     }
@@ -114,12 +115,14 @@ void SparseMatrix::setNode(int row, int col, int value) {
         insert->nextInRow = beforeRow->nextInRow;
         beforeRow->nextInRow = insert;
     } else {
+        if (topOfRow[row] != nullptr) insert->nextInRow = this->topOfRow[row];
         this->topOfRow[row] = insert;
     }
     if (beforeCol != nullptr) {
         insert->nextInCol = beforeCol->nextInCol;
         beforeCol->nextInCol = insert;
     } else {
+        if (topOfCol[col] != nullptr) insert->nextInCol = this->topOfCol[col];
         this->topOfCol[col] = insert;
     }
 }
@@ -132,8 +135,16 @@ void SparseMatrix::removeNode(int row, int col) {
     Node* beforeRow = findBeforeRow(row, col);
     Node* beforeCol = findBeforeCol(row, col);
     // Set before pointers to point to after node
-    if (beforeRow != nullptr) beforeRow->nextInRow = target->nextInRow;
-    if (beforeCol != nullptr) beforeCol->nextInCol = target->nextInCol;
+    if (beforeRow != nullptr) {
+        beforeRow->nextInRow = target->nextInRow;
+    } else {
+        topOfRow[row] = target->nextInRow;
+    }
+    if (beforeCol != nullptr) {
+        beforeCol->nextInCol = target->nextInCol;
+    } else {
+        topOfCol[col] = target->nextInCol;
+    }
     // Delete node
     delete target;
 }
@@ -171,7 +182,7 @@ Matrix Class Matrix Operations
 
 // Adds operand matrix to this matrix
 void SparseMatrix::sumMatrix(SparseMatrix* operand) {
-    //Return if out of range or nullptr
+    //Return if nullptr, or matrices not of equal size
     if (operand == nullptr || operand->topOfRow.size() != this->topOfRow.size() || operand->topOfCol.size() != this->topOfCol.size()) {
         return;
     }
@@ -180,14 +191,12 @@ void SparseMatrix::sumMatrix(SparseMatrix* operand) {
     for (int row = 0; row < this->topOfRow.size(); row++) {
         for (int col = 0; col < this->topOfCol.size(); col++) {
             // Get values from both matrices
-            int val1 = this->getValue(row, col);
+            int val1 = getValue(row, col);
             int val2 = operand->getValue(row, col);
             // Calculate sum
             int sum = val1 + val2;
             // Set the result in the current matrix
-            std::cout << "try to set " << std::to_string(row) << std::to_string(col) << " to " << std::to_string(sum);
-            this->setNode(row, col, sum);
-            std::cout << "successfully set " << std::to_string(row) << std::to_string(col) << " to " << std::to_string(sum);
+            setNode(row, col, sum);
         }
     }
 }
@@ -199,12 +208,12 @@ void SparseMatrix::sumMatrix(SparseMatrix* operand) {
 // A matrix multiplication is possible
 void SparseMatrix::multiplyMatrix(SparseMatrix* operand) {
 
-    for (int row = 0; row < this->rows; ++row) {
-        for (int col = 0; col < this->cols; ++col) {
+    for (int row = 0; row < this->topOfRow.size(); ++row) {
+        for (int col = 0; col < this->topOfCol.size(); ++col) {
             int sum = 0;
             
             // Dot Product
-            for(int k = 0; k < this->rows; k++){
+            for(int k = 0; k < this->topOfCol.size(); k++){
                 int val1 = this->getValue(row, col);
                 int val2 = operand->getValue(row, col);
                 sum += val1 * val2;
