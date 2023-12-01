@@ -35,7 +35,7 @@ class SparseMatrix {
         // Constructors
         SparseMatrix();
         SparseMatrix(int defaultValue);
-        SparseMatrix(int defaultValue, std::string fname); // Load matrix from file
+        SparseMatrix(std::string fname); // Load matrix from file
         ~SparseMatrix();
         // Basic operations
         Node* getNode(int row, int col); // Return node present at (row, col). If not present, return nullptr
