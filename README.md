@@ -20,4 +20,5 @@ All team members will make at least contributions to the code. However, each tea
 | P. Meralta | Presentation |
 | W. Kingvilay | Report |
 | A. Frias | Presentation |
+
 It is up to each team member to cover the area designated by their speciality, and to assist one another as requested.
