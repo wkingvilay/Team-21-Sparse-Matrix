@@ -5,6 +5,8 @@ Group Members: C. Horton, P. Meralta, W. Kingvilay, A. Frias
 */
 
 #include "sparseMatrix.h"
+#include <fstream>
+#include <sstream>
 
 /*
 Node Class Constructors
@@ -54,20 +56,25 @@ SparseMatrix::SparseMatrix(int defaultValue) {
     this->defaultValue = defaultValue;
 }
 
+// Load matrix from file
 SparseMatrix::SparseMatrix(int defaultValue, std::string fname){
     //Set the default value
     this->defaultValue = defaultValue;
 
     //Get name of file and open it
-    std::ifstream inputfile;
-    inputFile.open(fname);
+    std::ifstream inputfile(fname);
+
+    std::string line;
+
+    // Get first line as rows and cols
+    std::getline(inputfile, line);
+    std::stringstream ss(line);
 
     //Read first two values in the file,
     //number of rows and cols
     int rows;
     int cols;
-    inputFile >> rows;
-    inputFile >> cols;
+    ss >> rows >> cols;
 
     //Set up Value, which will received an element from file
     int value;
@@ -76,12 +83,14 @@ SparseMatrix::SparseMatrix(int defaultValue, std::string fname){
     //Gets the value from file and calls the setNode function
     //With the current rows, cols and value
     for(int i = 0; i < rows; i++){
+        std::getline(inputfile, line);
+        std::stringstream ss2(line);
         for(int j = 0; j < cols; j++){
-            inputFile >> value;
-            setNode(int i, int j, int value);
+            ss2 >> value;
+            setNode(i, j, value);
         }
     }
-    inputFile.close();
+    inputfile.close();
 }
 
 
