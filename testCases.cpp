@@ -56,6 +56,12 @@ int main(int argc, char*argv[]) {
     printMatrix(matrix5);
     matrix4 = matrix4.multiplyMatrix(&matrix5); // matrix4 x matrix5
     printMatrix(matrix4);
+
+    // Test reading matrices from file
+    SparseMatrix matrix6 = SparseMatrix(0, "matrix1.txt");
+    printMatrix(matrix6);
+    SparseMatrix matrix7 = SparseMatrix(0, "matrix2.txt");
+    printMatrix(matrix7);
 }
 
 void printMatrix(SparseMatrix matrix) {
