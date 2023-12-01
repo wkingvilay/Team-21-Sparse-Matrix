@@ -54,6 +54,37 @@ SparseMatrix::SparseMatrix(int defaultValue) {
     this->defaultValue = defaultValue;
 }
 
+SparseMatrix::SparseMatrix(int defaultValue, std::string fname){
+    //Set the default value
+    this->defaultValue = defaultValue;
+
+    //Get name of file and open it
+    std::ifstream inputfile;
+    inputFile.open(fname);
+
+    //Read first two values in the file,
+    //number of rows and cols
+    int rows;
+    int cols;
+    inputFile >> rows;
+    inputFile >> cols;
+
+    //Set up Value, which will received an element from file
+    int value;
+
+    //Nested For loop which reads through the 2D array on file
+    //Gets the value from file and calls the setNode function
+    //With the current rows, cols and value
+    for(int i = 0; i < rows; i++){
+        for(int j = 0; j < cols; j++){
+            inputFile >> value;
+            setNode(int i, int j, int value);
+        }
+    }
+
+    inputFile.close();
+}
+
 SparseMatrix::~SparseMatrix() = default;
 
 /*
@@ -61,7 +92,7 @@ Matrix Class Basic Operations
 */
 
 // Return node present at (row, col). If not present, return nullptr
-Node* SparseMatrix::getNode(int row, int col) {
+Node* SparseMatrix::getNode(int row, int col) { 
     // Check bounds
     if (row < 0 || row >= topOfRow.size() || col < 0 || col >= topOfCol.size()) return nullptr;
     // Iterate through rows
@@ -175,13 +206,11 @@ Matrix Class Matrix Operations
 */
 
 // Adds operand matrix to this matrix
-SparseMatrix SparseMatrix::sumMatrix(SparseMatrix* operand) {
+void SparseMatrix::sumMatrix(SparseMatrix* operand) {
     //Return if nullptr, or matrices not of equal size
     if (operand == nullptr || operand->topOfRow.size() != this->topOfRow.size() || operand->topOfCol.size() != this->topOfCol.size()) {
-        return *this;
+        return;
     }
-
-    SparseMatrix output = SparseMatrix(this->defaultValue);
 
     //Traverse through matrix
     for (int row = 0; row < this->topOfRow.size(); row++) {
@@ -192,34 +221,53 @@ SparseMatrix SparseMatrix::sumMatrix(SparseMatrix* operand) {
             // Calculate sum
             int sum = val1 + val2;
             // Set the result in the current matrix
-            output.setNode(row, col, sum);
+            setNode(row, col, sum);
         }
     }
-    return output;
 }
 
 // Multiplies this matrix by operand matrix
-SparseMatrix SparseMatrix::multiplyMatrix(SparseMatrix* operand) {
+// As I write this, I figure we may need to add two more parameters of some sort
+// So right now, Psuedocode will have to do until we figure something out of some sort. 
+// Still trying to figure a work around on how should I account for matrices when rows != cols so that
+// A matrix multiplication is possible
+void SparseMatrix::multiplyMatrix(SparseMatrix* operand) {
+
     if(this->topOfCol.size() != operand->topOfRow.size()){
-        return *this;
+        return;
     }
 
     SparseMatrix product = SparseMatrix(this->defaultValue);
 
+
     for (int row = 0; row < this->topOfRow.size(); ++row) {
         for (int col = 0; col < this->topOfRow.size(); ++col) {
             int sum = 0;
-
+            
             // Dot Product
-            for(int k = 0; k < this->topOfCol.size(); k++){
+            for(int k = 0; k < this->topOfRow.size(); k++){
                 int val1 = this->getValue(row, k);
                 int val2 = operand->getValue(k, col);
                 sum += val1 * val2;
+            
 
                 // Add result to the matrix
-                product.setNode(row, col, sum);
+                //if(sum != 0){
+                product->setNode(row, col, sum);
+                //}
             }
         }
     }
-    return product;
+
+    this->topOfRow = product->topOfRow;
+    this->topOfCol = product->topOfCol;
+
+    delete product;
 }
+
+// 
+// std::vector<std::vector<int>> SparseMatrix::Transpose(){
+//     
+//
+//     return matrix;
+// }
