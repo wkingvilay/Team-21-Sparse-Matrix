@@ -25,16 +25,16 @@ Matrix Class Helpers
 */
 
 /*
- *@brief    This applies to both findBeforeRow and findBeforeCol methods. 
+ *@brief    This applies to both findBeforeRow and findBeforeCol methods.
  *          When the function takes in the parameter int row and initialized beforeRow,
  *          we are saying "When we set this node in this position of the matrix, beforeRow will equal that very row position in the matrix".
  *          Once that is done, start a while loop that will check where the node should be
  *@param    row     Establish what row the node should be in
  *@param    col     Establish what col the node should be in
  *
- *@return   Depending on what if statement is met, return a nullptr if the set node can not point to anything 
+ *@return   Depending on what if statement is met, return a nullptr if the set node can not point to anything
  *          otherwise the function shall return the node pointing to its appropriate place
- * 
+ *
 */
 Node* SparseMatrix::findBeforeRow(int row, int col) {
     Node* beforeRow = this->topOfRow[row];
@@ -81,10 +81,8 @@ SparseMatrix::SparseMatrix(std::string fname){
 
     //Read first two values in the file,
     //number of rows and cols
-    int rows;
-    int cols;
     int defaultV;
-    ss >> rows >> cols >> defaultV;
+    ss >> defaultV;
 
     this->defaultValue = defaultV;
 
@@ -97,7 +95,7 @@ SparseMatrix::SparseMatrix(std::string fname){
     //Nested For loop which reads through the 2D array on file
     //Gets the value from file and calls the setNode function
     //With the current rows, cols and value
-    while(std::getline(inputfile, line){
+    while(std::getline(inputfile, line)){
         std::stringstream ss2(line);
         ss2 >> X;
         ss2 >> Y;
@@ -152,6 +150,9 @@ void SparseMatrix::setNode(int row, int col, int value) {
         target->value = value;
         return;
     }
+
+    // If node shouldn't & doesn't exist, don't create it
+    if (value == defaultValue) return;
 
     // Find pointers of before/after nodes in row and col
     Node* beforeRow = findBeforeRow(row, col);
