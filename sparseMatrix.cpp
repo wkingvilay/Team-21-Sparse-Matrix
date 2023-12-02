@@ -33,6 +33,7 @@ Matrix Class Helpers
  *@param    col     Establish what col the node should be in
  *
  *@return   Depending on what if statement is met, return a nullptr if the set node can not point to anything 
+ *          otherwise the function shall return the node pointing to its appropriate place
  * 
 */
 Node* SparseMatrix::findBeforeRow(int row, int col) {
