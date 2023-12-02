@@ -40,7 +40,7 @@ Node* SparseMatrix::findBeforeRow(int row, int col) {
     Node* beforeRow = this->topOfRow[row];
     while (beforeRow != nullptr) {
         if (beforeRow->col < col && beforeRow->nextInRow == nullptr) return beforeRow;
-        if (beforeRow->nextInRow == nullptr || beforeRow->col == col) return nullptr;
+        if (beforeRow->nextInRow == nullptr || beforeRow->col >= col) return nullptr;
         if (beforeRow->nextInRow->col >= col) return beforeRow;
         beforeRow = beforeRow->nextInRow;
     }
@@ -51,7 +51,7 @@ Node* SparseMatrix::findBeforeCol(int row, int col) {
     Node* beforeCol = this->topOfCol[col];
     while (beforeCol != nullptr) {
         if (beforeCol->row < row && beforeCol->nextInCol == nullptr) return beforeCol;
-        if (beforeCol->nextInCol == nullptr || beforeCol->row == row) return nullptr;
+        if (beforeCol->nextInCol == nullptr || beforeCol->row >= row) return nullptr;
         if (beforeCol->nextInCol->row >= row) return beforeCol;
         beforeCol = beforeCol->nextInCol;
     }
