@@ -57,10 +57,7 @@ SparseMatrix::SparseMatrix(int defaultValue) {
 }
 
 // Load matrix from file
-SparseMatrix::SparseMatrix(int defaultValue, std::string fname){
-    //Set the default value
-    this->defaultValue = defaultValue;
-
+SparseMatrix::SparseMatrix(std::string fname){
     //Get name of file and open it
     std::ifstream inputfile(fname);
 
@@ -74,21 +71,26 @@ SparseMatrix::SparseMatrix(int defaultValue, std::string fname){
     //number of rows and cols
     int rows;
     int cols;
-    ss >> rows >> cols;
+    int defaultV;
+    ss >> rows >> cols >> defaultV;
+
+    this->defaultValue = defaultV;
 
     //Set up Value, which will received an element from file
+    int X;
+    int Y;
     int value;
+
 
     //Nested For loop which reads through the 2D array on file
     //Gets the value from file and calls the setNode function
     //With the current rows, cols and value
-    for(int i = 0; i < rows; i++){
-        std::getline(inputfile, line);
+    while(std::getline(inputfile, line){
         std::stringstream ss2(line);
-        for(int j = 0; j < cols; j++){
-            ss2 >> value;
-            setNode(i, j, value);
-        }
+        ss2 >> X;
+        ss2 >> Y;
+        ss2 >> value;
+        setNode(X,Y,value);
     }
     inputfile.close();
 }
