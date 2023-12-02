@@ -58,9 +58,9 @@ int main(int argc, char*argv[]) {
     printMatrix(matrix4);
 
     // Test reading matrices from file
-    SparseMatrix matrix6 = SparseMatrix(0, "matrix1.txt");
+    SparseMatrix matrix6 = SparseMatrix("matrix1.txt");
     printMatrix(matrix6);
-    SparseMatrix matrix7 = SparseMatrix(0, "matrix2.txt");
+    SparseMatrix matrix7 = SparseMatrix("matrix2.txt");
     printMatrix(matrix7);
 }
 
