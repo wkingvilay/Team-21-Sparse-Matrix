@@ -25,6 +25,14 @@ int main(int argc, char* argv[]) {
     int mines = std::stoi(argv[3]);
     std::srand(std::stoi(argv[4]));
 
+    if (mines < 0) {
+        std::cout << "Error - must have at least zero mines.";
+        return 0;
+    } else if (mines > rows*cols) {
+        std::cout << "Error - too many mines! This grid can't fit more than " << rows*cols;
+        return 0;
+    }
+
     // If seed = 0, use current time as seed instead
     if (std::stoi(argv[4]) == 0) std::srand(std::time(nullptr));
 
