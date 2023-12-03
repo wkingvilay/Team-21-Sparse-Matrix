@@ -26,15 +26,14 @@ Matrix Class Helpers
 
 /*
  *@brief    This applies to both findBeforeRow and findBeforeCol methods.
- *          When the function takes in the parameter int row and initialized beforeRow,
- *          we are saying "When we set this node in this position of the matrix, beforeRow will equal that very row position in the matrix".
- *          Once that is done, start a while loop that will check where the node should be
- *@param    row     Establish what row the node should be in
- *@param    col     Establish what col the node should be in
+ *          When adding a node, we need to set the pointers of the node before it.
+ *          These functions search down each row/column until they locate the prior
+ *          node, if it exists.
+ *@param    row     The row of the new node
+ *@param    col     The column of the new node
  *
- *@return   Depending on what if statement is met, return a nullptr if the set node can not point to anything
- *          otherwise the function shall return the node pointing to its appropriate place
- *
+ *@return   Returns the node directly before where our new node is going to be located
+ *          in its row/column.
 */
 Node* SparseMatrix::findBeforeRow(int row, int col) {
     Node* beforeRow = this->topOfRow[row];
