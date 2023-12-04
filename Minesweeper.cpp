@@ -74,36 +74,16 @@ void printMatrix(int rows, int cols, SparseMatrix board) {
         for (int col = 0; col < cols; col++) {
             int value = board.getValue(row, col);
             switch (value) {
-                case 0:
-                    std::cout << value;
-                    break;
-                case 1:
-                    std::cout << dye::light_blue(value);
-                    break;
-                case 2:
-                    std::cout << dye::light_green(value);
-                    break;
-                case 3:
-                    std::cout << dye::light_yellow(value);
-                    break;
-                case 4:
-                    std::cout << dye::light_purple(value);
-                    break;
-                case 5:
-                    std::cout << dye::blue(value);
-                    break;
-                case 6:
-                    std::cout << dye::green(value);
-                    break;
-                case 7:
-                    std::cout << dye::yellow(value);
-                    break;
-                case 8:
-                    std::cout << dye::purple(value);
-                    break;
-                default:
-                    std::cout << dye::red("X");
-                    break;
+                case 0: std::cout << value; break;
+                case 1: std::cout << dye::light_blue(value); break;
+                case 2: std::cout << dye::light_green(value); break;
+                case 3: std::cout << dye::light_yellow(value); break;
+                case 4: std::cout << dye::light_purple(value); break;
+                case 5: std::cout << dye::blue(value); break;
+                case 6: std::cout << dye::green(value); break;
+                case 7: std::cout << dye::yellow(value); break;
+                case 8: std::cout << dye::purple(value); break;
+                default: std::cout << dye::red("X"); break; // Mine
             }
             std::cout << " ";
         }
