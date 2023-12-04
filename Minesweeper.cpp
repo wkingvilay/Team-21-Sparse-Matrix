@@ -1,7 +1,7 @@
 /*
 Sparse Matrices with Linked Lists
 URI CSC 212 Spring 2023 Term Project
-Group Members: C. Horton, P. Meralta, W. Kingvilay, A. Frias
+Group Members: C. Horton, P. Peralta, W. Kingvilay, A. Frias
 */
 
 /*
